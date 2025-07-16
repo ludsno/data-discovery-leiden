@@ -267,3 +267,5 @@ credentials.py
 # mudancas_minhas.md
 ESTE_E_O_LEIDEN
 checar_pacotes.py
+aux_test.py
+.gitignore
