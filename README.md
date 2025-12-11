@@ -1,18 +1,40 @@
-**This repository contains materials used by the publication:**
+# Data Lake Discovery: Leiden vs. SCD
 
-"Self-supervised data lakes discovery through unsupervised metadata-driven weighted similarity".
+Implementação e estudo experimental baseados no artigo *"Self-supervised data lakes discovery"* (Putrama & Martinek, 2024).
 
-DOI: https://doi.org/10.1016/j.ins.2024.120242
+Este repositório reproduz o pipeline de ingestão de metadados e construção de grafos de similaridade proposto no estado da arte, introduzindo uma alteração na etapa de **Detecção de Comunidades** para testar uma hipótese de otimização via modularidade.
 
-***
-The description of the files:
-- **Discovery.LSH.Networkx.Module.ipynb**: The module which performs the most data-discovery tasks
-- **Discovery.LSH.Networkx.FILE_SIZE.ipynb**: Utility file to extract file sizes of the data lakes
-- **Discovery.LSH.Networkx.cleaning.ipynb**: Utility file to clean a data lake
-- **The rest of Discovery.LSH.Network___.ipynb**: The main program to perform data discovery on the respective data lake
-- **discovery_lsh_netw.py**: Utility file called by concurrent processing during LSH processes
-- **Other files**: Utility files for dummy testing purposes
+## O Experimento
+O trabalho original utiliza o algoritmo **SCD (Silhouette Community Detection)** como motor de agrupamento.
+Este projeto implementou e testou a substituição do SCD pelo algoritmo de **Leiden** (evolução do Louvain), com o objetivo de verificar se a maximização da **modularidade** produziria clusters de tabelas semanticamente mais coerentes do que a otimização baseada em silhueta.
 
-The data lakes are required to run the program. It can be downloaded from here:
+## Stack e Conceitos
+* **Linguagem:** Python 3.x (Gerenciamento via Conda)
+* **Graph Mining:** `NetworkX`, `CDlib` (Community Discovery Library)
+* **Algoritmos:**
+    * **Indexação:** LSH (Locality Sensitive Hashing)
+    * **Similaridade:** J-Maxsym (Weighted Jaccard)
+    * **Clustering:** Leiden vs. SCD
+* **Análise:** `Pandas`, `Numpy`, `Scikit-learn` (Métricas de Classificação)
 
-https://data.mendeley.com/public-files/datasets/hvb236fvkf/files/367ee311-6aa0-4680-8f20-ffe11236b6e3/file_downloaded
+## Resultados e Análise Técnica
+
+A validação comparou os clusters gerados pelo método proposto (Leiden) contra o baseline (SCD) utilizando métricas supervisionadas (Acurácia, Precision, Recall) em datasets rotulados.
+
+### Observação
+A aplicação do algoritmo de Leiden manteve as métricas de performance em patamares similares ao baseline, sem o ganho estatístico esperado, apesar da robustez teórica do Leiden sobre o Louvain/SCD em redes complexas.
+
+### Conclusão do Benchmark
+A análise dos resultados sugere uma dependência forte entre a métrica de similaridade e o algoritmo de corte:
+1.  **O Algoritmo Original (SCD)** otimiza o *Silhouette Coefficient*, que prioriza a **separação** e distância entre grupos.
+2.  **O Algoritmo Testado (Leiden)** otimiza a *Modularidade*, que prioriza a **densidade** de conexões internas.
+
+**Veredito:** A topologia de grafo gerada pela métrica *J-Maxsym* tenderia a criar estruturas esparsas (favorecendo o SCD). O grafo não apresentou a densidade de conexões necessária para que algoritmos baseados em modularidade (como o Leiden) superassem o método original. O experimento valida a escolha do SCD para este tipo específico de representação de metadados.
+
+## Estrutura do Repositório
+
+* `Discovery.LSH.Networkx...ipynb`: Pipeline principal (Ingestão -> LSH -> Construção do Grafo -> Validação). Contém a lógica de comparação.
+* `get_leiden_communities.py`: Módulo auxiliar contendo a implementação da lógica do algoritmo Leiden adaptada para o grafo de metadados.
+
+---
+*Projeto desenvolvido no contexto de Iniciação Científica em Ciência de Dados.*
