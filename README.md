@@ -37,4 +37,4 @@ A análise dos resultados sugere uma dependência forte entre a métrica de simi
 * `get_leiden_communities.py`: Módulo auxiliar contendo a implementação da lógica do algoritmo Leiden adaptada para o grafo de metadados.
 
 ---
-*Projeto desenvolvido no contexto de Iniciação Científica em Ciência de Dados.*
+*Projeto desenvolvido no contexto de Iniciação Científica em Ciência de Dados, @ Laboratório Orion, UFAL.*
