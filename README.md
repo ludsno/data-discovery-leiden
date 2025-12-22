@@ -34,7 +34,13 @@ A análise dos resultados sugere uma dependência forte entre a métrica de simi
 ## Estrutura do Repositório
 
 * `Discovery.LSH.Networkx...ipynb`: Pipeline principal (Ingestão -> LSH -> Construção do Grafo -> Validação). Contém a lógica de comparação.
-* `get_leiden_communities.py`: Módulo auxiliar contendo a implementação da lógica do algoritmo Leiden adaptada para o grafo de metadados.
+* Função `get_leiden_communities()`: Implementada no notebook [Discovery.LSH.Networkx.Module.ipynb](Discovery.LSH.Networkx.Module.ipynb), utilizando `leidenalg`/`igraph` para particionamento por modularidade. Esta função substitui o SCD no benchmark proposto.
+
+## Créditos e Autoria
+
+- Código base e ideia experimental: derivados do trabalho de I Made Putrama & Tomáš Martinek (2024) – "Self-supervised data lakes discovery" (licença MIT). Ver o arquivo [LICENSE](LICENSE) para os termos.
+- Contribuições deste repositório: implementação da função `get_leiden_communities()` (Leiden), pequenos ajustes no pipeline e parâmetros (p.ex., `n_init` do MiniBatchKMeans no SCD, tratamento de exceções em `infer_types`, logs de execução), documentados em [mudancas_minhas.md](mudancas_minhas.md).
+- A estrutura e os notebooks foram adaptados para permitir a comparação direta entre SCD e Leiden no grafo de metadados construído via LSH/J‑Maxsym.
 
 ---
 *Projeto desenvolvido no contexto de Iniciação Científica em Data Lakes e Ciência de Dados, sob a orientação de Danilo Fernandes e Tamer Cavalcante, @ Laboratório Orion, UFAL.*
